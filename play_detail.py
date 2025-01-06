@@ -25,18 +25,12 @@ sample_index = 0  # 任意のインデックスに変更可能
 x_sample = x_test[sample_index]
 y_true = y_test[sample_index]
 
-# 入力データの表示
-plt.imshow(x_sample, cmap='gray')
-plt.title(f"True Label: {y_true}")
-plt.axis('off')
-plt.show()
-
 # ------------------------------
 # 3. 中間層のアクティベーションの取得
 # ------------------------------
 
-layer_name = 'hidden_layer'
-intermediate_layer_model = Model(inputs=model.input,
+layer_name = 'hidden_layer'  # ここを適切なレイヤー名に変更
+intermediate_layer_model = Model(inputs=model.inputs,  # 修正: model.input → model.inputs
                                  outputs=model.get_layer(layer_name).output)
 
 intermediate_output = intermediate_layer_model.predict(np.expand_dims(x_sample, axis=0))
@@ -59,8 +53,8 @@ print(f"予測確率: {prediction}")
 # ------------------------------
 
 # 重みとバイアスの取得
-hidden_layer_weights, hidden_layer_biases = model.get_layer('hidden_layer').get_weights()
-output_layer_weights, output_layer_biases = model.get_layer('dense_1').get_weights()
+hidden_layer_weights, hidden_layer_biases = model.get_layer(layer_name).get_weights()
+output_layer_weights, output_layer_biases = model.get_layer('dense').get_weights()
 
 # 入力データのフラット化
 x_flatten = x_sample.flatten()  # (784,)
@@ -91,3 +85,13 @@ print(f"\n出力層のアクティベーション (Softmax適用後):\n{a_output
 # 予測ラベルの取得
 predicted_label_manual = np.argmax(a_output)
 print(f"\n手動計算による予測ラベル: {predicted_label_manual}")
+
+# ------------------------------
+# 6. テストサンプルの表示（参考）
+# ------------------------------
+
+# 入力データの表示
+plt.imshow(x_sample, cmap='gray')
+plt.title(f"True Label: {y_true}")
+plt.axis('off')
+plt.show()
