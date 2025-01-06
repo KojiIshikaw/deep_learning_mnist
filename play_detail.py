@@ -17,6 +17,26 @@ mnist = tf.keras.datasets.mnist
 # データの前処理
 x_test = x_test / 255.0  # 正規化
 
+# モデルの概要を表示
+model.summary()
+
+# 各レイヤーの重みとバイアスを表示
+for layer in model.layers:
+    weights = layer.get_weights()
+    if weights:  # レイヤーが重みとバイアスを持っている場合
+        w, b = weights
+        print(f"Layer: {layer.name}")
+        print(f"Weights shape: {w.shape}")
+        print(f"Biases shape: {b.shape}")
+        print("Weights:")
+        print(w)
+        print("Biases:")
+        print(b)
+        print("-" * 50)
+    else:  # レイヤーが重みとバイアスを持っていない場合
+        print(f"Layer: {layer.name} has no weights.")
+        print("-" * 50)
+
 # ------------------------------
 # 2. 特定のテストサンプルの選択
 # ------------------------------
